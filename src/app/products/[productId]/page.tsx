@@ -1,21 +1,14 @@
-import { Product } from "@/models";
 import { Box, Card, CardContent, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import Image from "next/legacy/image";
 import DescriptionIcon from "@mui/icons-material/Description";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import { ProductQuantityForm } from "./ProductQuantityForm";
+import { ProductService } from "@/services/product.service";
 
-const product: Product = {
-  id: "1",
-  category_id: 1,
-  name: "Camisa",
-  description: "Descricao",
-  price: 189.99,
-  image_url: "https://source.unsplash.com/random?product",
-};
+async function ProductDetailPage({ params }: { params: { productId: string } }) {
+  const product = await new ProductService().getProduct(params.productId);
 
-function ProductDetailPage({ params }: { params: { productId: string } }) {
   return (
     <Grid2 container spacing={2}>
       <Grid2

@@ -1,4 +1,5 @@
 import { Order, OrderStatus } from "@/models";
+import { OrderServiceFactory } from "@/services/order.service";
 import { calculateTotalOrder } from "@/utils";
 import {
   Box,
@@ -12,31 +13,8 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 
-const orders: Order[] = [
-  {
-    id: "1",
-    status: OrderStatus.PENDING,
-    created_at: new Date().toUTCString(),
-    items: [
-      {
-        id: 1,
-        product: {
-          id: "1",
-          name: "Produto 1",
-          description: "Eita",
-          price: 189.99,
-          category_id: 1,
-          image_url: "https://source.unsplash.com/random?product",
-        },
-        quantity: 1,
-        price: 189.99,
-      },
-    ],
-    total: 189.99,
-  },
-];
-
 export async function MyOrdersListPage() {
+  const orders = await OrderServiceFactory.create().getOrders();
   return (
     <Box>
       <Typography variant="h4">Meus pedidos</Typography>

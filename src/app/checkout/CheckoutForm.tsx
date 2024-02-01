@@ -1,10 +1,16 @@
 import { Box, Button, TextField } from "@mui/material";
 import PaidIcon from "@mui/icons-material/Paid";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { checkoutAction } from "@/server-actions/checkout.action";
 
 export function CheckoutForm() {
   return (
-    <Box component={"form"}>
+    <Box component={"form"} action={async (formData: FormData) => {
+        // logica para gerar o card hash
+        formData.set("card_hash", "123");
+        await checkoutAction(formData);
+    }}>
+      {/*<input type="hidden" name="card_hash" value="123"/>*/}
       <Grid2 container spacing={3}>
         <Grid2 xs={12} md={6}>
           <TextField

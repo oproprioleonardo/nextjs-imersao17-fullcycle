@@ -1,6 +1,7 @@
 "use client";
 
 import { Category } from "@/models";
+import { searchProducts } from "@/utils";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -19,10 +20,10 @@ export function SelectCategory({ categories }: { categories: Category[] }) {
         onChange={(event) => {
           const search = searchParams.get("search");
           const category_id = event.target.value;
-          //searchProducts(router, search, category_id);
+          searchProducts(router, search, category_id);
         }}
       >
-        <MenuItem value="0"> Todas as categorias</MenuItem>
+        <MenuItem value="0">Todas as categorias</MenuItem>
         {categories.map((category) => (
           <MenuItem key={category.id} value={category.id}>
             {category.name}

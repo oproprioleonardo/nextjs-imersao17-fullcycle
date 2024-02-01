@@ -8,6 +8,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import Link from "next/link";
+import { logoutAction } from "@/server-actions/auth.action";
 
 export type UserMenuProps = {
   user: any | null;
@@ -35,6 +36,7 @@ export function UserMenu(props: UserMenuProps) {
   };
 
   const handleLogout = async () => {
+    await logoutAction();
     handleClose();
   };
 

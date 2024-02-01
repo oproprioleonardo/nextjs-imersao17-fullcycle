@@ -12,55 +12,20 @@ import {
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { Product } from "@/models";
 import React from "react";
 import { Total } from "@/components/Total";
 import Link from "next/link";
+import { CartServiceFactory } from "@/services/cart.service";
+import { ProductService } from "@/services/product.service";
+import { removeItemFromCartAction } from "@/server-actions/cart.action";
 
-const cart = {
-  items: [
-    {
-      product_id: "1",
-      quantity: 1,
-      total: 189.99,
-    },
-    {
-      product_id: "2",
-      quantity: 1,
-      total: 189.99,
-    },
-  ],
-  total: 189.99,
-};
+async function MyCartPage() {
+  const cart = CartServiceFactory.create().getCart();
+  const productService = new ProductService();
+  const products = await productService.getProductsByIds(
+    cart.items.map((item) => item.product_id)
+  );
 
-const products: Product[] = [
-  {
-    id: "1",
-    name: "Produto 1",
-    description: "Eita",
-    price: 189.99,
-    category_id: 1,
-    image_url: "https://source.unsplash.com/random?product",
-  },
-  {
-    id: "2",
-    name: "Produto 1",
-    description: "Eita",
-    price: 189.99,
-    category_id: 1,
-    image_url: "https://source.unsplash.com/random?product",
-  },
-  {
-    id: "3",
-    name: "Produto 1",
-    description: "Eita",
-    price: 189.99,
-    category_id: 1,
-    image_url: "https://source.unsplash.com/random?product",
-  },
-];
-
-function MyCartPage() {
   return (
     <Box>
       <Typography variant="h3">
@@ -69,13 +34,13 @@ function MyCartPage() {
       <Grid2 container>
         <Grid2 xs={10} sm={7} md={4}>
           <List>
-            {cart.items.map((item, key) => {
+            {cart.items.map((item, index) => {
               const product = products.find(
                 (product) => product.id == item.product_id //usar
               )!;
 
               return (
-                <React.Fragment key={key}>
+                <React.Fragment key={index}>
                   <ListItem
                     sx={{ display: "flex", alignItems: "flex-start", mt: 3 }}
                   >
@@ -107,8 +72,8 @@ function MyCartPage() {
                   <ListItem
                     sx={{ display: "flex", justifyContent: "end", p: 0 }}
                   >
-                    <form>
-                      <input type="hidden" name="index" value={key} />
+                    <form action={removeItemFromCartAction}>
+                      <input type="hidden" name="index" value={index} />
                       <Button
                         color="error"
                         startIcon={<DeleteIcon />}

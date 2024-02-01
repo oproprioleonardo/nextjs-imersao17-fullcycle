@@ -9,6 +9,7 @@ import { Controller, useForm } from "react-hook-form";
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import * as yup from "yup";
+import { addToCartAction } from "@/server-actions/cart.action";
 
 const schema = yup
   .object({
@@ -55,7 +56,7 @@ export function ProductQuantityForm(props: { product: Product }) {
         const newFormData = new FormData();
         newFormData.append("quantity", formData.get("quantity") as string);
         newFormData.append("product_id", formData.get("product_id") as string);
-        // await addToCartAction(newFormData);
+        await addToCartAction(newFormData);
       }}
     >
       <Box

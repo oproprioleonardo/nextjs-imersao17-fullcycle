@@ -1,5 +1,6 @@
 import { Total } from "@/components/Total";
-import { Order, OrderStatus } from "@/models";
+import { OrderStatus } from "@/models";
+import { OrderServiceFactory } from "@/services/order.service";
 import { calculateTotalOrder } from "@/utils";
 import {
   Box,
@@ -12,29 +13,9 @@ import {
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
-const order: Order = {
-  id: "1",
-  status: OrderStatus.PENDING,
-  created_at: new Date().toUTCString(),
-  items: [
-    {
-      id: 1,
-      product: {
-        id: "1",
-        name: "Produto 1",
-        description: "Eita",
-        price: 189.99,
-        category_id: 1,
-        image_url: "https://source.unsplash.com/random?product",
-      },
-      quantity: 1,
-      price: 189.99,
-    },
-  ],
-  total: 189.99,
-};
-
 async function MyOrderDetail({ params }: { params: { orderId: string } }) {
+  const order = await OrderServiceFactory.create().getOrder(params.orderId);
+
   return (
     <Box>
       <Grid2 container spacing={2}>
